@@ -1,6 +1,7 @@
-import Mongoose, { Schema, Document } from 'mongoose'
+import mongoose, { Schema, Document } from 'mongoose'
+import timestamp from 'mongoose-timestamp'
 
-Mongoose.connect("mongodb://localhost/mern_1", { useNewUrlParser: true })
+const db = mongoose.connection;
 
 interface IPerson extends Document {
     firstName: string
@@ -8,10 +9,24 @@ interface IPerson extends Document {
 }
 
 const PersonSchema = new Schema({
-    firstName: String,
-    lastName: String
+    firstName: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    lastName: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    balance: {
+        type: Number,
+        default: 0
+    }
 })
 
-const PersonModel = Mongoose.model<IPerson>("person", PersonSchema)
+PersonSchema.plugin(timestamp)
+
+const PersonModel = db.model<IPerson>("person", PersonSchema)
 
 export default PersonModel

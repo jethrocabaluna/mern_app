@@ -1,5 +1,11 @@
+import mongoose from 'mongoose'
 import app from './App'
+import config from './config'
 
-const port = process.env.PORT || 3000
-
-app.listen(port, () => console.log(`Listening to port ${port}`))
+app.listen(config.PORT, () => {
+    mongoose.connect(
+        config.MONGODB_URI,
+        { useNewUrlParser: true }
+    )
+    console.log(`Listening to port ${config.PORT}`)
+})
