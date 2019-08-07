@@ -8,10 +8,12 @@ router.get('/', async (req: Request, res: Response) => {
     const query = `
         {
             posts {
-                created_by
+                created_by {
+                    firstName
+                    lastName
+                }
                 title
                 body
-                followers
             }
         }
     `
@@ -23,7 +25,10 @@ router.get('/:id', async (req: Request, res: Response) => {
     const query = `
         {
             post (id: "${req.params.id}") {
-                created_by
+                created_by {
+                    firstName
+                    lastName
+                }
                 title
                 body
                 followers

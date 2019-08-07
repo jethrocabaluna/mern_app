@@ -4,16 +4,15 @@ import timestamp from 'mongoose-timestamp'
 const db = mongoose.connection
 
 interface IPost extends Document {
-    created_by: Schema.Types.ObjectId
+    created_by: Object
     title: string
     body: string
-    followers: Schema.Types.ObjectId[]
+    followers: Object[]
 }
 
 const PostSchema = new Schema({
     created_by: {
-        type: Schema.Types.ObjectId,
-        ref: 'Person'
+        type: Object
     },
     title: {
         type: String,

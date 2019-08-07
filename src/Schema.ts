@@ -5,12 +5,23 @@ import {
     GraphQLNonNull,
     GraphQLObjectType,
     GraphQLSchema,
-    GraphQLFloat
+    GraphQLFloat,
+    GraphQLInputObjectType
 } from 'graphql'
 import { GraphQLDate } from 'graphql-iso-date'
 
 import PersonModel from './Models/Person'
 import PostModel from './Models/Post'
+
+const PersonTypeInput = new GraphQLInputObjectType({
+    name: "PersonInput",
+    fields: {
+        id: { type: GraphQLID },
+        firstName: { type: GraphQLString },
+        lastName: { type: GraphQLString },
+        balance: { type: GraphQLFloat }
+    }
+})
 
 const PersonType = new GraphQLObjectType({
     name: "Person",
@@ -26,10 +37,10 @@ const PostType = new GraphQLObjectType({
     name: "Post",
     fields: {
         id: { type: GraphQLID },
-        created_by: { type: GraphQLID },
+        created_by: { type: PersonType },
         title: { type: GraphQLString },
         body: { type: GraphQLString },
-        followers: { type: GraphQLList(GraphQLString) },
+        followers: { type: GraphQLList(PersonType) },
         createdAt: { type: GraphQLDate },
         updatedAt: { type: GraphQLDate }
     }
@@ -63,7 +74,7 @@ const schema = new GraphQLSchema({
                     console.log(args)
                     if (args.id) {
                         return PostModel.find({
-                            created_by: {
+                            "created_by.id" : {
                                 $in: args.id
                             }
                         })
@@ -100,7 +111,7 @@ const schema = new GraphQLSchema({
             post: {
                 type: PostType,
                 args: {
-                    created_by: { type: GraphQLNonNull(GraphQLID) },
+                    created_by: { type: GraphQLNonNull(PersonTypeInput) },
                     title: { type: GraphQLNonNull(GraphQLString) },
                     body: { type: GraphQLNonNull(GraphQLString) }
                 },
