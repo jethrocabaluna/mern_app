@@ -37,7 +37,20 @@ class App {
     private mountRoutes() : void {
         const router = Router()
         router.get('/', (req : Request, res: Response) => {
-            res.send('Homepage')
+            const html = `
+                <!doctype html>
+                <html>
+                    <head>
+                        <title>React Game</title>
+                    </head>
+                    <body>
+                            <div id="root">
+                            </div>
+                            <script src="./js/bundle.js"></script>
+                    </body>
+                </html>
+            `
+            res.send(html)
         })
         this.express.use('/', router)
         this.express.use('/accounts', accountRouter)
