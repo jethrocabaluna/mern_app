@@ -53,8 +53,8 @@ class App {
             res.send(html)
         })
         this.express.use('/', router)
-        this.express.use('/accounts', accountRouter)
-        this.express.use('/posts', postRouter)
+        this.express.use('/api/accounts', accountRouter)
+        this.express.use('/api/posts', postRouter)
     }
 }
 
