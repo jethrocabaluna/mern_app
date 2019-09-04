@@ -71,7 +71,6 @@ const schema = new GraphQLSchema({
                     id: { type: GraphQLList(GraphQLID) }
                 },
                 resolve: (root, args, context, info) => {
-                    console.log(args)
                     if (args.id) {
                         return PostModel.find({
                             "created_by.id" : {
@@ -79,7 +78,7 @@ const schema = new GraphQLSchema({
                             }
                         })
                     }
-                    return PostModel.find().exec()
+                    return PostModel.find().populate('created_by').exec()
                 }
             },
             post: {
@@ -88,7 +87,7 @@ const schema = new GraphQLSchema({
                     id: { type: GraphQLNonNull(GraphQLID) }
                 },
                 resolve: (root, args, context, info) => {
-                    return PostModel.findById(args.id).exec()
+                    return PostModel.findById(args.id).populate('created_by').exec()
                 }
             }
         }
@@ -111,7 +110,7 @@ const schema = new GraphQLSchema({
             post: {
                 type: PostType,
                 args: {
-                    created_by: { type: GraphQLNonNull(PersonTypeInput) },
+                    created_by: { type: GraphQLNonNull(GraphQLID) },
                     title: { type: GraphQLNonNull(GraphQLString) },
                     body: { type: GraphQLNonNull(GraphQLString) }
                 },

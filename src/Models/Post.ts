@@ -12,7 +12,8 @@ interface IPost extends Document {
 
 const PostSchema = new Schema({
     created_by: {
-        type: Object
+        type: Schema.Types.ObjectId,
+        ref: "person"
     },
     title: {
         type: String,
@@ -26,7 +27,7 @@ const PostSchema = new Schema({
     followers: [
         {
             type: Schema.Types.ObjectId,
-            ref: "Person"
+            ref: "person"
         }
     ]
 })
